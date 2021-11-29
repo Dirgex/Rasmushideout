@@ -1,7 +1,7 @@
 <template>
   <div class="galleryContainer">
 
-
+  <div class="navbar-div">
     <ul class="main-ul">
     <li class="main-li-categories">
         <button @click="filterByCategory('showAll')">Show all</button>
@@ -24,6 +24,7 @@
        <button @click="lowToHigh">Price: Low to High</button>
        <button @click="highToLow">Price: High to Low</button>
     </div>
+  </div>
     <div class="products">
            <div>
             <input
@@ -227,6 +228,21 @@ export default {
   background-color: antiquewhite;
   height: 50px;
   width: 150px;
+}
+
+.main-ul { 
+  display: flex;
+  border: 1px solid red;
+  text-decoration: none;
+  list-style: none;
+}
+
+.main-li-categories {
+  border: 1px solid red;
+}
+
+.navbar-div {
+  width: 100%;
 }
 /*********************************/
 /* KORT */

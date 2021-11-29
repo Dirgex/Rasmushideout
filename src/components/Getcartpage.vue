@@ -1,0 +1,373 @@
+<template>
+  <!--CHECKOUT-->
+
+  <div class="basket">
+    <div
+      class="cashout-container"
+      v-for="cartitem in cart"
+      :key="cartitem.test"
+    >
+      <div class="basket-labels">
+        <ul>
+          <li class="item item-heading storlek">Item</li>
+          <li class="price storlek">Price</li>
+          <li class="quantity storlek">Quantity</li>
+          <li class="subtotal storlek">Total</li>
+        </ul>
+      </div>
+
+      <!--Produkt start-->
+
+      <div class="basket-product">
+        <div class="item">
+          <div class="product-image">
+            <img :src="cartitem.image" alt="" class="product-frame" />
+          </div>
+          <div class="product-details">
+            <h1>{{ cartitem.title }}</h1>
+            <p>
+              <strong>{{ cartitem.description }}</strong>
+            </p>
+          </div>
+        </div>
+        <div class="price">{{ cartitem.price }}</div>
+        <div class="quantity">
+          <p>Quantity :</p>
+        </div>
+        <div class="subtotal">compute here</div>
+        <div class="remove">
+           <button @click="deleteWholeProduct(cartitem.id)">Delete whole product</button>
+            <button>Increase    </button>
+          <button @click="decreaseQuantity(cartitem.id)">Decrease </button>
+        </div>
+      </div>
+
+      <!--Produkt slut-->
+
+
+    </div>
+        <div class="summary-subtotal">
+          <div class="subtotal-title">Total</div>
+          <div class="subtotal-value">130$</div>
+        </div>
+    <div class="summary-checkout">
+      <button @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
+    </div>
+  </div>
+
+  <!--CHECKOUT SLUT-->
+</template>
+
+<script>
+export default {
+  name: "Getcartpage",
+  props: {
+    cart: Array,
+  },
+  methods:{
+    confirmOrder(){
+        this.$set(this.cart[0], 'quantity', 1);
+        console.log(this.cart);
+        alert('Rasmus skall göra en Betalsida och en app som tar emot betalkort och blri klar nästa år.')
+    },
+    deleteWholeProduct(id){
+      this.$emit("deleteProduct", id);
+    },
+    decreaseQuantity(id){
+      this.$emit("decrease", id);
+    }
+
+
+  },
+
+};
+</script>
+
+<style scoped>
+a {
+  border: 0 none;
+  outline: 0;
+  text-decoration: none;
+}
+
+strong {
+  font-weight: bold;
+}
+
+p {
+  margin: 0.75rem 0 0;
+}
+
+h1 {
+  font-size: 0.75rem;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button {
+  border: 0 none;
+  outline: 0 none;
+}
+
+button {
+  background-color: #666;
+  color: #fff;
+}
+
+.storlek {
+  font-size: 16px;
+}
+
+button:hover,
+button:focus {
+  background-color: #555;
+}
+
+.basket-labels,
+.basket-product {
+  width: 100%;
+}
+
+img {
+  width: 120px;
+  height: 100px;
+}
+
+input,
+button,
+.basket,
+.basket-labels,
+.item,
+.price,
+.quantity,
+.subtotal,
+.basket-product,
+.product-image,
+.product-details {
+  float: left;
+}
+
+.cashout-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 0.75rem;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 1rem 0;
+  width: 960px;
+}
+
+.basket {
+  width: 70%;
+  padding: 100px 0px;
+}
+
+.basket-labels {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-top: 1.625rem;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  color: #111;
+  display: inline-block;
+  padding: 0.625rem 0;
+}
+
+li.price:before,
+li.subtotal:before {
+  content: "";
+}
+
+.item {
+  width: 55%;
+}
+
+.price,
+.quantity,
+.subtotal {
+  width: 15%;
+}
+
+.subtotal {
+  text-align: right;
+}
+
+.remove {
+  bottom: 1.125rem;
+  float: right;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  width: 45%;
+}
+
+.remove button {
+  background-color: transparent;
+  color: #777;
+  float: none;
+  text-decoration: underline;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.item-heading {
+  padding-left: 3rem;
+}
+
+.basket-product {
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.product-image {
+  width: 35%;
+}
+
+.product-details {
+  width: 65%;
+}
+
+.product-frame {
+  border: 1px solid #aaa;
+}
+
+.product-details {
+  padding: 0 1.5rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.quantity-field {
+  background-color: rgb(248, 221, 196);
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  padding: 2px;
+  width: 3.75rem;
+}
+
+.summary-subtotal {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 1rem 0;
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.summary-subtotal {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 1rem 0;
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.subtotal-title,
+.subtotal-value {
+  color: #111;
+  float: left;
+  width: 50%;
+}
+
+.subtotal-value {
+  color: #111;
+  float: left;
+  width: 50%;
+}
+.amount-in-basket {
+  display: flex;
+}
+.subtotal-value-off {
+  padding-left: 350px;
+}
+
+.summary-delivery {
+  padding-bottom: 3rem;
+}
+
+.subtotal-value {
+  text-align: right;
+}
+
+.summary-checkout {
+  display: block;
+}
+
+.checkout-cta {
+  display: block;
+  float: none;
+  font-size: 0.75rem;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0.625rem 0;
+  width: 100%;
+  background-color: orangered;
+}
+
+@media screen and (max-width: 640px) {
+  .basket,
+  .summary,
+  .item,
+  .remove {
+    width: 100%;
+  }
+  .basket-labels {
+    display: none;
+  }
+
+  .item {
+    margin-bottom: 1rem;
+  }
+  .product-image {
+    width: 40%;
+  }
+  .product-details {
+    width: 60%;
+  }
+  .price,
+  .subtotal {
+    width: 33%;
+  }
+  .quantity {
+    text-align: center;
+    width: 34%;
+  }
+  .quantity-field {
+    float: none;
+  }
+  .remove {
+    bottom: 0;
+    text-align: left;
+    margin-top: 0.75rem;
+    position: relative;
+  }
+  .remove button {
+    padding: 0;
+  }
+  .summary {
+    margin-top: 1.25rem;
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  main {
+    width: 100%;
+  }
+  .product-details {
+    padding: 0 1rem;
+  }
+}
+</style>

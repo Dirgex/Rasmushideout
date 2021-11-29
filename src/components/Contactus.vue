@@ -4,12 +4,8 @@
       <div class="container">
         <div class="cta">
           <div class="cta-text-box">
-            <h2 class="heading-secondary">Get your first meal for free!</h2>
-            <p class="cta-text">
-              Healthy, tasty and hassle-free meals are waiting for you. Start
-              eating well today. You can cancel or pause anytime. And the first
-              meal is on us!
-            </p>
+            <h2 class="heading-secondary">Contact us</h2>
+
 
             <form class="cta-form" name="sign-up" netlify>
               <div>
@@ -19,53 +15,59 @@
                   type="text"
                   placeholder="John Smith"
                   name="full-name"
-                  required
+                  
                 />
               </div>
 
               <div>
+             
                 <label for="email">Email address</label>
                 <input
                   id="email"
                   type="email"
                   placeholder="me@example.com"
                   name="email"
-                  required
+                  
                 />
+                   <textarea name="Message" id="" cols="30" rows="10" placeholder="Type your message here"></textarea>
               </div>
 
-              <div>
-                <label for="select-where">Where did you hear from us?</label>
-                <select id="select-where" name="select-where" required>
-                  <option value="">Please choose one option:</option>
-                  <option value="friends">Friends and family</option>
-                  <option value="youtube">YouTube video</option>
-                  <option value="podcast">Podcast</option>
-                  <option value="ad">Facebook ad</option>
-                  <option value="others">Others</option>
-                </select>
-              </div>
+     
 
-              <button class="btn btn--form">Sign up now</button>
-
+             
+              
               <!-- <input type="checkbox" />
               <input type="number" /> -->
             </form>
+             <button @click="sendEmail" class="btn btn--form">Send</button>
           </div>
-          <div
-            class="cta-img-box"
-            role="img"
-            aria-label="Woman enjoying food"
-          ></div>
+
         </div>
       </div>
     </section>
+    <Popupcontact v-if="contactVisible" @close-mail="contactVisible = false"/>
     </div>
 </template>
 
 <script>
+
+  import Popupcontact from './Popupcontact.vue'
+
 export default {
-    name: 'Contactus'
+    name: 'Contactus',
+    data(){
+      return{
+        contactVisible: false
+      }
+    },
+    components:{
+      Popupcontact
+    },
+    methods:{
+      sendEmail(){
+        this.contactVisible = true;
+      }
+    }
 }
 </script>
 

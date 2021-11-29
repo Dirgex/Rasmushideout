@@ -1,32 +1,7 @@
 <template>
   <div class="galleryContainer">
 
-  <div class="navbar-div">
-    <ul class="main-ul">
-    <li class="main-li-categories">
-        <button @click="filterByCategory('showAll')">Show all</button>
-      </li>
-      <li class="main-li-categories">
-        <button @click="filterByCategory('electronics')">Electronics</button>
-      </li>
-      <li class="main-li-categories">
-        <button @click="filterByCategory('jewelery')">Jewelery</button>
-      </li>
-      <li class="main-li-categories">
-        <button @click="filterByCategory('men\'s clothing')">Men's clothing</button>
-      </li>
-      <li class="main-li-categories">
-        <button @click="filterByCategory('women\'s clothing')">Women's clothing</button>
-      </li>
-    </ul>
-
-    <div class="sortBtn">
-       <button @click="lowToHigh">Price: Low to High</button>
-       <button @click="highToLow">Price: High to Low</button>
-    </div>
-  </div>
-    <div class="products">
-           <div>
+          <div class="searchbar"> 
             <input
               class="main-search"
               type="text"
@@ -35,8 +10,34 @@
               v-model= "searchedTitle"
               v-on:keyup.enter="searchProduct(searchedTitle)"
             />
+            </div>
+  <div class="navbar-div">
+    <ul class="main-ul">
+    <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('showAll')">Show all</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('electronics')">Electronics</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('jewelery')">Jewelery</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('men\'s clothing')">Men's clothing</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('women\'s clothing')">Women's clothing</button>
+      </li>
+    </ul>
 
-      </div>
+    <div class="sortBtn">
+       <button class="sort-Btn" @click="lowToHigh">Price: Low to High</button>
+       <button class="sort-Btn" @click="highToLow">Price: High to Low</button>
+    </div>
+  </div>
+    <div class="products">
+
+      
       <ul class="main-ul-products">
     
         <li
@@ -51,10 +52,13 @@
          
           
         </li>
+
       </ul>
-    </div>
+      </div>
       <Popup :product="clickedProduct" @send-Product="sendToCartFromPopUp" @close-Popup="showPopup= false" v-if="showPopup" />
-  </div>
+    </div>
+      
+
 </template>
 
 <script>
@@ -183,8 +187,9 @@ export default {
 }
 
 .galleryContainer {
-  display: flex;
+  display: block;
   justify-content: center;
+  margin: 0rem 23rem;
 }
 
 .main-ul-products {
@@ -198,8 +203,8 @@ export default {
 }
 
 .imgMain-products {
-  height: 200px;
-  width: 200px;
+  height: 170px;
+  width: 170px;
 }
 
 .product-name {
@@ -212,12 +217,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 2rem;
   border: 1px solid rgb(0, 0, 0);
   height: 100%;
   border-radius: 10px;
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
-  padding-bottom: 2rem;
 }
 
 .description-item {
@@ -232,19 +235,55 @@ export default {
 
 .main-ul { 
   display: flex;
-  border: 1px solid red;
   text-decoration: none;
   list-style: none;
+  gap: 0.2rem;
 }
 
-.main-li-categories {
-  border: 1px solid red;
-}
 
 .navbar-div {
+  display: flex;
+  justify-content: space-between; 
   width: 100%;
   height: 0%;
+  gap: 1rem;
+
 }
+
+.button-sort {
+  background-color: #0096db;
+  color: white;
+  height: 35px;
+  width: 110px;
+  border: 1px solid black;
+}
+.searchbar {
+  display: flex;
+  height: 3.5rem;
+  justify-content: flex-end;
+}
+
+.main-search {
+  height: 2.5rem;
+  width: 16.4rem;
+}
+
+.sortBtn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.2rem;
+}
+
+.sort-Btn {
+  background-color: #0096db;
+  color: white;
+  height: 35px;
+  width: 130px;
+  border: 1px solid black;
+}
+
+
+
 /*********************************/
 /* KORT */
 /*********************************/

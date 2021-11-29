@@ -2,20 +2,21 @@
   <div class="parent-popup">
     <div id="popup-content">
       <button class="close" @click="onClose()">X</button>
-      <img
+      <h1>{{ product.title }}</h1>
+      <img class="bildpopup"
         :src="product.image"
-        width="350px"
-        height="450px"
+        width="250px"
+        height="300px"
         :id="product.id"
         :key="product.id"
       />
       <div>
-        <h1>{{ product.title }}</h1>
-        <h4>Description</h4>
+        
+        <h4 class="beskriv" >Description</h4>
         <p id="popup-desc">
           {{ product.description }}
         </p>
-        <button @click="sendProductToCart()">Lägg till</button>
+        <button class="knappen" @click="sendProductToCart()">Lägg till</button>
       </div>
     </div>
   </div>
@@ -48,15 +49,41 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+.bildpopup {
+  padding-top: 10px;
+}
+
 #popup-content {
   display: block;
   background: rgb(255, 255, 255);
-  width: 400px;
+  width: 500px;
+  padding: 20px;
   position: fixed;
   border: 2px solid rgb(172, 169, 169);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  font-family: Helvetica, sans-serif;
+}
+
+.beskriv {
+  padding: 10px 0px;
+  font-size: 20px;
+}
+
+.knappen {
+  padding: 13px 25px;
+  background-color: antiquewhite;
+  color: black;
+  margin: 20px 0px;
+}
+
+.close {
+   padding: 10px 15px;
+  background-color: antiquewhite;
+  color: black;
+  margin: 20px 0px;
 }
 
 .popUp {

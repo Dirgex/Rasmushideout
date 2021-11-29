@@ -1,6 +1,10 @@
 <template>
     <div id="app">
       <div class="header-image">
+      <div>
+        <button class="button-sort" @click="goToGallery">Home</button>
+        <button class="button-sort"  @click=goToContact>Contact us</button>
+      </div>
         <a href="index.html"
           ><img
             src="https://i.ibb.co/jrpR7f0/logo.png"
@@ -8,23 +12,24 @@
             alt="logo"
             border="0"
         /></a>
+        <div>
+            <button class="button-sort"  @click=goToCart >Cart ({{cartFromGallery.length}})</button>
+            <button class="button-sort"  @click=emptyCart>Empty</button>
+        </div>
       </div>
+
+
       <header class="main-header">
-  
         <nav class="main-nav">
-            <button @click=emptyCart>Empty the whole cart button  </button>
 
         </nav>
+   
       </header>
-      <button @click="goToGallery">Home</button>
-  <button @click=goToCart >Cart ({{cartFromGallery.length}})</button>
-   
-  <button @click=goToContact>Contact us</button>
-   
 
+ 
   <Getcartpage :cart="cartFromGallery" v-if="cartVisible" @decrease="deleteFromCart" @deleteProduct="removeItemsFromCart"/>
   <Getgallery :cart="cartFromGallery" v-if="galleryVisible" @getCartFromGallery="getCart"/>
-  <Contactus v-if="contactVisible"/>
+  <Contactus v-if="contactVisible" />
 
   <!-- ta bort footern så länge
   <section>
@@ -96,7 +101,8 @@ export default {
         cartFromGallery: [],
         textSearch: '',
         id: null,
-        indexToDelete: null
+        indexToDelete: null,
+        
         
       };
     },
@@ -159,7 +165,9 @@ export default {
 
 .header-image {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  margin-bottom: 1rem;
 }
 
 .main-ul {
@@ -190,7 +198,18 @@ a:hover {
   font-size: 1.5rem;
 }
 
+.loga {
+  width: 10rem;
+}
 
+.button-sort{
+    background-color: #0096db;
+    color: white;
+    height: 35px;
+    width: 110px;
+    border: 1px solid black;
+
+}
 
 .select {
   margin-top: 1rem;

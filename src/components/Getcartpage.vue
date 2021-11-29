@@ -53,22 +53,33 @@
     <div class="summary-checkout">
       <button @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
     </div>
+    <Popuporder v-if="orderVisible" @close-order="orderVisible = false"/>
   </div>
 
   <!--CHECKOUT SLUT-->
 </template>
 
 <script>
+
+import Popuporder from './Popuporder.vue'
+
 export default {
   name: "Getcartpage",
+  components:{
+    Popuporder
+  },
+  data(){
+    return{
+      orderVisible: false
+    }
+  },
   props: {
     cart: Array,
   },
   methods:{
     confirmOrder(){
-        this.$set(this.cart[0], 'quantity', 1);
-        console.log(this.cart);
-        alert('Rasmus skall göra en Betalsida och en app som tar emot betalkort och blri klar nästa år.')
+     
+        this.orderVisible = true;
     },
     deleteWholeProduct(id){
       this.$emit("deleteProduct", id);

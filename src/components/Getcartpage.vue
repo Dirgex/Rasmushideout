@@ -1,61 +1,61 @@
 <template>
   <!--CHECKOUT-->
+  <main>
+    <div class="basket">
+      <div
+        class="cashout-container"
+        v-for="cartitem in cart"
+        :key="cartitem.test"
+      >
+        <div class="basket-labels">
+          <ul>
+            <li class="item item-heading storlek">Item</li>
+            <li class="price storlek">Price</li>
+            <li class="quantity storlek">Quantity</li>
+            <li class="subtotal storlek">Total</li>
+          </ul>
+        </div>
 
-  <div class="basket">
-    <div
-      class="cashout-container"
-      v-for="cartitem in cart"
-      :key="cartitem.test"
-    >
-      <div class="basket-labels">
-        <ul>
-          <li class="item item-heading storlek">Item</li>
-          <li class="price storlek">Price</li>
-          <li class="quantity storlek">Quantity</li>
-          <li class="subtotal storlek">Total</li>
-        </ul>
-      </div>
+        <!--Produkt start-->
 
-      <!--Produkt start-->
-
-      <div class="basket-product">
-        <div class="item">
-          <div class="product-image">
-            <img :src="cartitem.image" alt="" class="product-frame" />
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img :src="cartitem.image" alt="" class="product-frame" />
+            </div>
+            <div class="product-details">
+              <h1>{{ cartitem.title }}</h1>
+              <p>
+                <strong>{{ cartitem.description }}</strong>
+              </p>
+            </div>
           </div>
-          <div class="product-details">
-            <h1>{{ cartitem.title }}</h1>
-            <p>
-              <strong>{{ cartitem.description }}</strong>
-            </p>
+          <div class="price">{{ cartitem.price }}</div>
+          <div class="quantity">
+            <p>Quantity :</p>
+          </div>
+          <div class="subtotal">compute here</div>
+          <div class="remove">
+            <button class="padd" @click="deleteWholeProduct(cartitem.id)">Delete whole product</button>
+              <button class="padd" @click="increaseQuantity(cartitem)" >Increase    </button>
+            <button class="padd" @click="decreaseQuantity(cartitem.id)">Decrease </button>
           </div>
         </div>
-        <div class="price">{{ cartitem.price }}</div>
-        <div class="quantity">
-          <p>Quantity :</p>
+
+        <!--Produkt slut-->
+
+
         </div>
-        <div class="subtotal">compute here</div>
-        <div class="remove">
-           <button @click="deleteWholeProduct(cartitem.id)">Delete whole product</button>
-            <button>Increase    </button>
-          <button @click="decreaseQuantity(cartitem.id)">Decrease </button>
+            <div class="summary-subtotal">
+              <div class="subtotal-title">Total</div>
+              <div class="subtotal-value">130$</div>
+            </div>
+        <div class="summary-checkout">
+          <button @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
         </div>
-      </div>
-
-      <!--Produkt slut-->
-
-
+        <Popuporder v-if="orderVisible" @close-order="orderVisible = false"/>
     </div>
-        <div class="summary-subtotal">
-          <div class="subtotal-title">Total</div>
-          <div class="subtotal-value">130$</div>
-        </div>
-    <div class="summary-checkout">
-      <button @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
-    </div>
-    <Popuporder v-if="orderVisible" @close-order="orderVisible = false"/>
-  </div>
-
+  </main>
   <!--CHECKOUT SLUT-->
 </template>
 
@@ -78,18 +78,22 @@ export default {
   },
   methods:{
     confirmOrder(){
+        console.log(this.cart);
      
         this.orderVisible = true;
     },
     deleteWholeProduct(id){
       this.$emit("deleteProduct", id);
     },
+        increaseQuantity(cartitem){
+      this.$emit("increase", cartitem);
+    },
     decreaseQuantity(id){
       this.$emit("decrease", id);
     }
 
 
-  },
+  }, 
 
 };
 </script>
@@ -103,6 +107,27 @@ a {
 
 strong {
   font-weight: bold;
+}
+
+.padd  {
+ color: black;
+ padding: 0px 10px;
+  text-decoration: none;
+
+}
+
+main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
+}
+
+button {
+ color: black;
+ padding: 0px 10px;
+  text-decoration: none;
+
 }
 
 p {
@@ -172,8 +197,9 @@ button,
 }
 
 .basket {
-  width: 70%;
+  width: 960px;
   padding: 100px 0px;
+  
 }
 
 .basket-labels {
@@ -220,15 +246,17 @@ li.subtotal:before {
   right: 0;
   text-align: right;
   width: 45%;
+  color: black;
 }
 
 .remove button {
   background-color: transparent;
-  color: #777;
+  color: black;
   float: none;
   text-decoration: underline;
   text-transform: uppercase;
   cursor: pointer;
+  font-family: Helvetica, sans-serif;
 }
 
 .item-heading {

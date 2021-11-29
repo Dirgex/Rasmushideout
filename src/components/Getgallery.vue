@@ -1,40 +1,8 @@
 <template>
   <div class="galleryContainer">
 
-          <div class="searchbar"> 
-            <input
-              class="main-search"
-              type="text"
-              name="search"
-              placeholder="Search item..."
-              v-model= "searchedTitle"
-              v-on:keyup.enter="searchProduct(searchedTitle)"
-            />
-            </div>
-  <div class="navbar-div">
-    <ul class="main-ul">
-    <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('showAll')">Show all</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('electronics')">Electronics</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('jewelery')">Jewelery</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('men\'s clothing')">Men's clothing</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('women\'s clothing')">Women's clothing</button>
-      </li>
-    </ul>
+      
 
-    <div class="sortBtn">
-       <button class="sort-Btn" @click="lowToHigh">Price: Low to High</button>
-       <button class="sort-Btn" @click="highToLow">Price: High to Low</button>
-    </div>
-  </div>
     <div class="products">
 
       
@@ -42,8 +10,8 @@
     
         <li
           class="product-li-class"
-          v-for="product in filteredProducts"
-          :key="product.id"
+          v-for="product in cartGallery"
+          :key="product.key"
         >
           <img @click="getPopupDetails(product)" :src="product.image" :id="product.id" class="imgMain-products" />
           <h1 class="product-name">{{ product.title }}</h1>
@@ -55,7 +23,8 @@
 
       </ul>
       </div>
-      <Popup :product="clickedProduct" @send-Product="sendToCartFromPopUp" @close-Popup="showPopup= false" v-if="showPopup" />
+    
+      <Popupitem :product="clickedProduct" @send-Product="$emit('send-Product')" @close-Popup="showPopup= false" v-if="showPopup" />
     </div>
       
 
@@ -67,81 +36,34 @@
 export default {
   name: "Getgallery",
   components: {
-      Popup: () => import('./Popup.vue'),
+      Popupitem: () => import('./Popupitem.vue'),
      
   },
   data() {
     return {
-      products: [],
-      filteredProducts: [],
-      clickedProduct: null,
       showPopup: false,
-      searchedTitle: ''
+      searchedTitle: '',
      
     };
   },
   props:{
-    cart: Array,
-    search: String
+    cartGallery: Array,
+    clickedProduct: Object
   },
   methods: {
-    filterByCategory(category){
-        if(category === 'showAll'){
-            this.filteredProducts = this.products;
-            return;
-        }
-
-        this.filteredProducts = this.products.filter(product => {
-            return product.category === category;
-            
-        })
-    },
-    searchProduct(searchedTitle){
-      this.filteredProducts = this.products.filter(product=>{
-        return product.title.includes(searchedTitle);
-        
-      })
-    },
     getPopupDetails(product){
         this.showPopup = true;
-        this.clickedProduct = product;
+        this.$emit('get-Popupdetails', product);
+        
     },
-
-  sendToCartFromPopUp(){
-    this.cart.push(this.clickedProduct);
-    this.$emit('getCartFromGallery',this.cart);
-    
-  },
+       
 
   sendToCartFromGallery(product){
-    this.cart.push(product);
-    this.$emit('getCartFromGallery',this.cart);
- 
-    
+    this.$emit('sendToCartFromGallery', product);
   },
-
-  lowToHigh(){
-    this.filteredProducts.sort(function(lowest, highest){
-        return lowest.price - highest.price;
-    }); 
-    
-  },
-    highToLow(){
-    this.filteredProducts.sort(function(lowest, highest){
-        return highest.price - lowest.price;
-    }); 
-    
-  },
-
-
    
   },
-  created() {
-    fetch("https://fakestoreapi.com/products/")
-      .then((res) => res.json())
-      .then((json) => (this.products = this.filteredProducts = json));
-  
-  },
+
 };
 </script>
 
@@ -194,11 +116,11 @@ export default {
 
 .main-ul-products {
   display: grid;
-  grid-template-columns: 25rem 25rem 25rem;
-  grid-template-rows: 30rem 30rem 30rem 30rem 30rem;
+  grid-template-columns: 20rem 20rem 20rem;
+  
   column-gap: 1rem;
   row-gap: 1rem;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 2rem;
 }
 
@@ -215,12 +137,11 @@ export default {
 .product-li-class {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border: 1px solid rgb(0, 0, 0);
   height: 100%;
   border-radius: 10px;
-  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
 }
 
 .description-item {
@@ -228,9 +149,11 @@ export default {
 }
 
 .btn-product {
-  background-color: antiquewhite;
-  height: 50px;
-  width: 150px;
+background-color: antiquewhite; 
+color: black;
+height: 35px;
+width: 110px;
+border: 1px solid black;
 }
 
 .main-ul { 
@@ -238,48 +161,6 @@ export default {
   text-decoration: none;
   list-style: none;
   gap: 0.2rem;
-}
-
-
-.navbar-div {
-  display: flex;
-  justify-content: space-between; 
-  width: 100%;
-  height: 0%;
-  gap: 1rem;
-
-}
-
-.button-sort {
-  background-color: #0096db;
-  color: white;
-  height: 35px;
-  width: 110px;
-  border: 1px solid black;
-}
-.searchbar {
-  display: flex;
-  height: 3.5rem;
-  justify-content: flex-end;
-}
-
-.main-search {
-  height: 2.5rem;
-  width: 16.4rem;
-}
-
-.sortBtn {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.2rem;
-}
-
-.sort-Btn {
-  background-color: #0096db;
-  color: white;
-  height: 35px;
-  width: 130px;
-  border: 1px solid black;
 }
 
 

@@ -1,37 +1,66 @@
 <template>
     <div id="app">
       <div class="header-image">
-      <div>
-        <button class="button-sort" @click="goToGallery">Home</button>
-        <button class="button-sort"  @click=goToContact>Contact us</button>
-      </div>
-        <a href="index.html"
+        <a @click="goToGallery" href="#"
           ><img
             src="https://i.ibb.co/jrpR7f0/logo.png"
             class="loga"
             alt="logo"
             border="0"
         /></a>
+
+          <div class="searchbar"  > 
+            <input
+              class="main-search"
+              type="text"
+              name="search"
+              placeholder="Search item..."
+              v-model= "textSearch"
+              v-on:keyup.enter="searchProduct(textSearch)"
+  
+            />
+            </div>
+
         <div>
-            <button class="button-sort"  @click=goToCart >Cart ({{cartFromGallery.length}})</button>
-            <button class="button-sort"  @click=emptyCart>Empty</button>
+            <button class="button-sort"  @click=goToCart >Cart ({{cart.length}})</button>
+            <button class="button-sort"  @click=emptyCart>Empty cart</button>
+            <button class="button-sort"  @click=goToContact>Contact us</button>
         </div>
       </div>
 
 
-      <header class="main-header">
-        <nav class="main-nav">
 
-        </nav>
-   
-      </header>
+            <div class="navbar-div" v-if="galleryVisible">
+    <ul class="main-ul">
+    <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('showAll')">Show all</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('electronics')">Electronics</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('jewelery')">Jewelery</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('men\'s clothing')">Men's clothing</button>
+      </li>
+      <li class="main-li-categories">
+        <button class="button-sort" @click="filterByCategory('women\'s clothing')">Women's clothing</button>
+      </li>
+    </ul>
 
+    <div class="sortBtn" v-if="galleryVisible">
+       <button class="sort-Btn" @click="lowToHigh">Price: Low to High</button>
+       <button class="sort-Btn" @click="highToLow">Price: High to Low</button>
+    </div>
+  </div>
+      
  
-  <Getcartpage :cart="cartFromGallery" v-if="cartVisible" @decrease="deleteFromCart" @deleteProduct="removeItemsFromCart"/>
-  <Getgallery :cart="cartFromGallery" v-if="galleryVisible" @getCartFromGallery="getCart"/>
+  <Getcartpage :cart="cart" v-if="cartVisible" @decrease="deleteFromCart" @increase="increaseToCart" @deleteProduct="removeItemsFromCart"/>
+  <Getgallery  :clickedProduct="clickedProduct" :cartGallery="cartGallery" v-if="galleryVisible" @send-Product="pushProductFromPopup" @sendToCartFromGallery="pushProductToCart" @get-Popupdetails="setClickedProduct"/>
   <Contactus v-if="contactVisible" />
 
-  <!-- ta bort footern så länge
+  
   <section>
     <footer class="footer">
       <div class="fot-container">
@@ -76,7 +105,7 @@
       </div>
     </footer>
   </section>
-  !-->
+  
     
     </div>
 </template>
@@ -95,10 +124,14 @@ export default {
     },
     data(){
       return{
+        cart: [],
+        cartWithQuantity:[],
+        cartGallery: [],
+        Showallcart: [],
+        clickedProduct: null,
         galleryVisible: true,
         cartVisible: false,
         contactVisible: false,
-        cartFromGallery: [],
         textSearch: '',
         id: null,
         indexToDelete: null,
@@ -111,6 +144,13 @@ export default {
         this.cartVisible = true;
         this.galleryVisible = false;
         this.contactVisible = false;
+        this.cartWithQuantity = this.cart.map(obj=>{
+          let cwqObj = {};
+          cwqObj[obj.id] = obj.id ++; 
+          return cwqObj
+        })
+        
+        console.log(this.cartWithQuantity)
       },
       goToContact(){
         this.contactVisible =true;
@@ -122,34 +162,79 @@ export default {
         this.cartVisible = false;
         this.galleryVisible = true;
       },
-    getCart(cart){
-      this.cartFromGallery = cart;
-      console.log(this.cartFromGallery);
+
+    pushProductFromPopup(){
+      this.cart.push(this.clickedProduct);
+    },
+    pushProductToCart(product){
+      this.cart.push(product);
+    },
+    setClickedProduct(product){
+      this.clickedProduct = product;
+      console.log(this.clickedProduct);
+    },
+     filterByCategory(category){
+        if(category === 'showAll'){
+            this.cartGallery = this.Showallcart;
+            return;
+        }
+
+        this.cartGallery = this.Showallcart.filter(product => {
+            return product.category === category;
+            
+        })
+    },
+  lowToHigh(){
+    this.cartGallery.sort(function(lowest, highest){
+        return lowest.price - highest.price;
+    }); 
     
+  },
+    highToLow(){
+    this.cartGallery.sort(function(lowest, highest){
+        return highest.price - lowest.price;
+    }); 
+    
+  },
+
+    searchProduct(textSearch){
+      this.cartGallery = this.Showallcart.filter(product=>{
+        return product.title.includes(textSearch);
+        
+      })
     },
 
     emptyCart(){
-      this.cartFromGallery = [];
+      this.cart = [];
     },
 
+
     deleteFromCart(id) {
-       this.indexToDelete = this.cartFromGallery.findIndex((c) => c.id == id);
+       this.indexToDelete = this.cart.findIndex((c) => c.id == id);
      if (this.indexToDelete != -1) {
        console.log(this.indexToDelete);
-        this.cartFromGallery.splice(this.indexToDelete, 1);
+        this.cart.splice(this.indexToDelete, 1);
 
-        console.log(this.cartFromGallery);
+        console.log(this.cart);
      }
     },
 
     removeItemsFromCart(id){
-     this.cartFromGallery = this.cartFromGallery.filter((c) => c.id !== id);
+     this.cart = this.cart.filter((c) => c.id !== id);
 
-     console.log(this.cartFromGallery);
+     console.log(this.cart);
         
-    
+    },
+    increaseToCart(cartitem){
+      this.cart.push(cartitem);
     }
-    }
+    },
+      created() {
+    fetch("https://fakestoreapi.com/products/")
+      .then((res) => res.json())
+      .then((json) => (this.Showallcart = this.cartGallery = json));
+
+  },
 
 }
 </script>
@@ -166,8 +251,12 @@ export default {
 .header-image {
   display: flex;
   justify-content: space-evenly;
-  align-items: flex-end;
-  margin-bottom: 1rem;
+  align-items: center;
+  padding: 0 10rem;
+  justify-content: space-around;
+  background-color: lightgray;
+  width: 100%;
+
 }
 
 .main-ul {
@@ -202,6 +291,11 @@ a:hover {
   width: 10rem;
 }
 
+.main-search {
+    height: 3.4rem;
+    width: 30rem;
+}
+
 .button-sort{
     background-color: #0096db;
     color: white;
@@ -220,6 +314,106 @@ a:hover {
 
 .category {
   margin-left: 50%;
+}
+
+.navbar-div {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  gap: 10rem;
+  margin-top: 1rem;
+
+}
+
+.button-sort {
+  background-color: #0096db;
+  color: white;
+  height: 35px;
+  width: 110px;
+  border: 1px solid black;
+}
+.searchbar {
+  display: inline-block;
+  height: 3.5rem;
+  justify-content: flex-end;
+}
+
+.main-search {
+  height: 2.5rem;
+  width: 16.4rem;
+}
+
+.sortBtn {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.2rem;
+}
+
+.sort-Btn {
+  background-color: #0096db;
+  color: white;
+  height: 35px;
+  width: 130px;
+  border: 1px solid black;
+}
+
+
+.product-name {
+  font-size: 22px;
+  text-align: center;
+  width: 250px;
+}
+
+.galleryContainer {
+  display: block;
+  justify-content: center;
+  margin: 0rem 23rem;
+}
+
+.main-ul-products {
+  display: grid;
+  grid-template-columns: 20rem 20rem 20rem;
+  
+  column-gap: 1rem;
+  row-gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+
+.product-name {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.product-li-class {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgb(0, 0, 0);
+  height: 100%;
+  border-radius: 10px;
+}
+
+.description-item {
+  font-size: 1.2rem;
+}
+
+.btn-product {
+ background-color: #0096db;
+ color: white;
+ height: 35px;
+ width: 110px;
+border: 1px solid black;
+}
+
+.main-ul { 
+  display: flex;
+  text-decoration: none;
+  list-style: none;
+  gap: 0.2rem;
 }
 
 
@@ -423,7 +617,7 @@ ul {
 .btn--form {
   background-color: #45260a;
   color: #fdf2e9;
-  align-self: end;
+  align-self: flex-end;
   padding: 1.2rem;
 }
 

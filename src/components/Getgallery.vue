@@ -243,6 +243,7 @@ export default {
 
 .navbar-div {
   width: 100%;
+  height: 0%;
 }
 /*********************************/
 /* KORT */

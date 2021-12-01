@@ -35,7 +35,8 @@ export default {
       
     },
     sendProductToCart() {
-      this.$emit("send-Product");
+     this.$emit("send-Product");
+  
     },
   },
 };

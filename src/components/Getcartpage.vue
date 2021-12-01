@@ -4,10 +4,11 @@
     <div class="basket">
       <div
         class="cashout-container"
-        v-for="cartitem in cart"
-        :key="cartitem.test"
+        v-for="cartitem in filter"
+        :key="cartitem.id"
+      
       >
-        <div class="basket-labels">
+        <div class="basket-labels"  >
           <ul>
             <li class="item item-heading storlek">Item</li>
             <li class="price storlek">Price</li>
@@ -18,8 +19,10 @@
 
         <!--Produkt start-->
 
-        <div class="basket-product">
-          <div class="item">
+        <div class="basket-product"  >
+            
+          <div class="item" >
+
             <div class="product-image">
               <img :src="cartitem.image" alt="" class="product-frame" />
             </div>
@@ -32,7 +35,7 @@
           </div>
           <div class="price">{{ cartitem.price }}</div>
           <div class="quantity">
-            <p>Quantity :</p>
+            <p>Quantity  </p>
           </div>
           <div class="subtotal">compute here</div>
           <div class="remove">
@@ -43,12 +46,15 @@
         </div>
 
         <!--Produkt slut-->
-
+         
 
         </div>
             <div class="summary-subtotal">
+              <div v-if="cart.length === 0">
+            <h3>Your cart is empty</h3>
+        </div>
               <div class="subtotal-title">Total</div>
-              <div class="subtotal-value">130$</div>
+              <div class="subtotal-value">$</div>
             </div>
         <div class="summary-checkout">
           <button @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
@@ -70,7 +76,8 @@ export default {
   },
   data(){
     return{
-      orderVisible: false
+      orderVisible: false,
+      
     }
   },
   props: {
@@ -78,7 +85,6 @@ export default {
   },
   methods:{
     confirmOrder(){
-        console.log(this.cart);
      
         this.orderVisible = true;
     },
@@ -90,10 +96,17 @@ export default {
     },
     decreaseQuantity(id){
       this.$emit("decrease", id);
+    },
+
+
+  },
+  computed:{
+        filter(){
+          
+      return [...new Map(this.cart.map(cartitem => [cartitem.id, cartitem])).values()];
+      
     }
-
-
-  }, 
+  }
 
 };
 </script>

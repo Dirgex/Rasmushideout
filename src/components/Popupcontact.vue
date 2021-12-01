@@ -38,7 +38,8 @@ filter: blur(8px);
   transform: translate(-50%, -50%);
   font-family: Helvetica, sans-serif;
   position: fixed;
-  box-shadow: 0 3rem 50rem rgb(0 0 0 / 50%)
+  box-shadow: 0 3rem 50rem rgb(0 0 0 / 50%);
+  height: 25rem;
 }
 
 .close {
@@ -47,8 +48,11 @@ filter: blur(8px);
   padding: 1.2rem;
   margin-bottom: 2rem;
   border-radius: 5px;
+}
 
-
+.popup-contact-p {
+  font-size: 2rem;
+  margin-top: 4rem;
 }
 
 </style>

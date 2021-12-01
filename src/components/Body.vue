@@ -16,7 +16,8 @@
               name="search"
               placeholder="Search item..."
               v-model= "textSearch"
-              v-on:keyup.enter="searchProduct(textSearch)"
+              @keyup.enter="searchProduct(textSearch)"
+              v-if="galleryVisible"
   
             />
             </div>
@@ -125,7 +126,6 @@ export default {
     data(){
       return{
         cart: [],
-        cartWithQuantity:[],
         cartGallery: [],
         Showallcart: [],
         clickedProduct: null,
@@ -133,7 +133,6 @@ export default {
         cartVisible: false,
         contactVisible: false,
         textSearch: '',
-        id: null,
         indexToDelete: null,
         
         
@@ -144,20 +143,14 @@ export default {
         this.cartVisible = true;
         this.galleryVisible = false;
         this.contactVisible = false;
-        this.cartWithQuantity = this.cart.map(obj=>{
-          let cwqObj = {};
-          cwqObj[obj.id] = obj.id ++; 
-          return cwqObj
-        })
-        
-        console.log(this.cartWithQuantity)
+      
       },
       goToContact(){
-        this.contactVisible =true;
+        this.contactVisible = true;
         this.cartVisible = false;
         this.galleryVisible = false;
       },
-            goToGallery(){
+      goToGallery(){
         this.contactVisible =false;
         this.cartVisible = false;
         this.galleryVisible = true;
@@ -165,13 +158,18 @@ export default {
 
     pushProductFromPopup(){
       this.cart.push(this.clickedProduct);
+ 
     },
     pushProductToCart(product){
-      this.cart.push(product);
+        
+        this.cart.push(product)
+        
+    
+    
     },
     setClickedProduct(product){
       this.clickedProduct = product;
-      console.log(this.clickedProduct);
+      
     },
      filterByCategory(category){
         if(category === 'showAll'){
@@ -212,17 +210,13 @@ export default {
     deleteFromCart(id) {
        this.indexToDelete = this.cart.findIndex((c) => c.id == id);
      if (this.indexToDelete != -1) {
-       console.log(this.indexToDelete);
         this.cart.splice(this.indexToDelete, 1);
 
-        console.log(this.cart);
      }
     },
 
     removeItemsFromCart(id){
      this.cart = this.cart.filter((c) => c.id !== id);
-
-     console.log(this.cart);
         
     },
     increaseToCart(cartitem){
@@ -232,8 +226,8 @@ export default {
       created() {
     fetch("https://fakestoreapi.com/products/")
       .then((res) => res.json())
-      .then((json) => (this.Showallcart = this.cartGallery = json));
-
+      .then((json) => (this.Showallcart = this.cartGallery = json))
+      
   },
 
 }
@@ -453,7 +447,6 @@ ul {
   position: absolute;
   left: 0;
   bottom: -10px;
-  background-color: #e91e63;
   height: 2px;
   box-sizing: border-box;
   width: 50px;

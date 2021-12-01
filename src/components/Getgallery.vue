@@ -11,7 +11,7 @@
         <li
           class="product-li-class"
           v-for="product in cartGallery"
-          :key="product.key"
+          :key="product.test"
         >
           <img @click="getPopupDetails(product)" :src="product.image" :id="product.id" class="imgMain-products" />
           <h1 class="product-name">{{ product.title }}</h1>
@@ -53,16 +53,18 @@ export default {
   methods: {
     getPopupDetails(product){
         this.showPopup = true;
-        this.$emit('get-Popupdetails', product);
+       this.$emit('get-Popupdetails', product);
         
     },
        
 
   sendToCartFromGallery(product){
     this.$emit('sendToCartFromGallery', product);
-  },
-   
-  },
+    
+  },  
+
+  }
+ 
 
 };
 </script>

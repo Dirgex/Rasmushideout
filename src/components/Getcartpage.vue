@@ -33,11 +33,11 @@
               </p>
             </div>
           </div>
-          <div class="price">{{ cartitem.price }}</div>
+          <div class="price">{{ cartitem.price }} $</div>
           <div class="quantity">
-            <p>Quantity  </p>
+            <p class="price">{{cartitem.quantity}} </p>
           </div>
-          <div class="subtotal">compute here</div>
+          <div class="subtotal">{{Math.round(cartitem.price * cartitem.quantity)}}  $</div>
           <div class="remove">
             <button class="padd" @click="deleteWholeProduct(cartitem.id)">Delete whole product</button>
               <button class="padd" @click="increaseQuantity(cartitem)" >Increase    </button>
@@ -52,12 +52,12 @@
             <div class="summary-subtotal">
               <div v-if="cart.length === 0">
             <h3>Your cart is empty</h3>
-        </div>
-              <div class="subtotal-title">Total</div>
-              <div class="subtotal-value">$</div>
+        </div >
+              <div v-if="cart.length > 0" class="subtotal-title">Total</div>
+              <div v-if="cart.length > 0" class="subtotal-value"><h3> {{ Math.round(sumTotal) }} $</h3></div>
             </div>
         <div class="summary-checkout">
-          <button @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
+          <button v-if="cart.length > 0" @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
         </div>
         <Popuporder v-if="orderVisible" @close-order="orderVisible = false"/>
     </div>
@@ -100,18 +100,40 @@ export default {
 
 
   },
-  computed:{
-        filter(){
-          
-      return [...new Map(this.cart.map(cartitem => [cartitem.id, cartitem])).values()];
+
+   computed:{
+        filter() {    
+      const sortedCart = [...new Map(this.cart.map(cartitem => [cartitem.id, cartitem])).values()];
+     for(let product of sortedCart){
+      let count = this.cart.filter(cartitem=>cartitem.id === product.id);
+      product.quantity = count.length;
       
     }
-  }
-
+    
+    return sortedCart;
+    }, 
+      sumTotal(){
+        let total = 0 ;
+        for(let i=0; i<this.cart.length; i++){
+        total += this.cart[i].price;
+         
+        }
+       
+       return total; 
+       
+      } 
+    
+   }
 };
 </script>
 
 <style scoped>
+.quantity {
+  display: flex;
+  justify-content: center;
+}
+
+
 a {
   border: 0 none;
   outline: 0;
@@ -143,9 +165,6 @@ button {
 
 }
 
-p {
-  margin: 0.75rem 0 0;
-}
 
 h1 {
   font-size: 0.75rem;
@@ -246,6 +265,7 @@ li.subtotal:before {
 .quantity,
 .subtotal {
   width: 15%;
+  font-size: 1.1rem;
 }
 
 .subtotal {
@@ -354,18 +374,21 @@ li.subtotal:before {
 }
 
 .summary-checkout {
-  display: block;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .checkout-cta {
-  display: block;
+  display: flex;
   float: none;
   font-size: 0.75rem;
   text-align: center;
   text-transform: uppercase;
   padding: 0.625rem 0;
-  width: 100%;
-  background-color: orangered;
+  width: 50%;
+  background-color: #0096db;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (max-width: 640px) {

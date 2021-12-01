@@ -93,15 +93,7 @@
               <li><a href="#">Women's clothing</a></li>
             </ul>
           </div>
-          <div class="footer-col">
-            <h4>follow us</h4>
-            <div class="social-links">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
+          
         </div>
       </div>
     </footer>
@@ -503,125 +495,6 @@ ul {
   .footer-col {
     width: 100%;
   }
-}
-
-/* CONTACT FORMULÄR */
-
-/***************************/
-/* CTA SECTION*/
-/***************************/
-.section-cta {
-  padding: 0 0 12.8rem;
-  background-color: #fdf2e9;
-}
-
-.cta {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  /* background-color: #e67e22; */
-  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.015);
-  border-radius: 11px;
-  background-image: linear-gradient(to right bottom, #eb984e, #e67e22);
-  overflow: hidden;
-}
-
-.cta-text-box {
-  padding: 4.8rem 6.4rem 6.4rem 4.8rem;
-  color: #45260a;
-}
-
-.cta-text {
-  font-size: 1.8rem;
-  line-height: 1.8;
-  margin-bottom: 1.8rem;
-  color: #333;
-}
-
-.cta .heading-secondary {
-  /* color: #45260a; */
-  color: inherit;
-  margin-bottom: 3.2rem;
-}
-
-.cta-img-box {
-
-  background-size: cover;
-  background-position: center;
-  height: auto;
-  width: auto;
-}
-
-.cta-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 3.2rem;
-  row-gap: 2.4rem;
-}
-
-.cta-form label {
-  display: block;
-  font-size: 1.6rem;
-  font-weight: 500;
-  margin-bottom: 1.2rem;
-}
-
-.cta-form input,
-.cta-form select {
-  width: 100%;
-  padding: 1.2rem;
-  font-size: 1.8rem;
-  font-family: inherit;
-  color: inherit;
-  border: none;
-  background-color: #fdf2e9;
-  border-radius: 9px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.cta-form input::placeholder {
-  color: #aaa;
-}
-
-.cta *:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.8rem rgba(230, 125, 34, 0.5);
-}
-
-.btn,
-.btn:link,
-.btn:visited {
-  display: inline-block;
-
-  font-size: 2rem;
-  font-weight: 600;
-  padding: 1.6rem 3.2rem;
-  border-radius: 9px;
-  text-decoration: none;
-
-  /* for .btn it self */
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-
-  /* transition: background-color 0.3s; */
-  transition: all 0.3s;
-}
-
-.btn--form {
-  background-color: #45260a;
-  color: #fdf2e9;
-  align-self: flex-end;
-  padding: 1.2rem;
-}
-
-.btn--form:hover,
-.btn--form:active {
-  background-color: #fff;
-  color: #555;
-}
-
-.heading-secondary {
-  font-size: 4.8rem;
 }
 
 

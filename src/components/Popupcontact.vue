@@ -1,30 +1,27 @@
 <template>
   <div class="popup-contact">
-      <button class="close" @click="closeMail()">X</button>
-      <p class="popup-contact-p">Thanks for your mail, we will never reply</p>
+    <button class="close" @click="closeMail()">X</button>
+    <p class="popup-contact-p">Thanks for your mail, we will never reply</p>
   </div>
-
 </template>
 
 <script>
 export default {
-    name: 'Popupcontact',
-    methods:{
-        closeMail(){
-            this.$emit('close-mail');
-        }
-    }
-}
+  name: "Popupcontact",
+  methods: {
+    closeMail() {
+      this.$emit("close-mail");
+    },
+  },
+};
 </script>
 
 <style>
 .blury-parent {
-width: 100%;
-height: 100%;
-filter: blur(8px);
+  width: 100%;
+  height: 100%;
+  filter: blur(8px);
 }
-
-
 
 .popup-contact {
   display: block;
@@ -54,5 +51,4 @@ filter: blur(8px);
   font-size: 2rem;
   margin-top: 4rem;
 }
-
 </style>

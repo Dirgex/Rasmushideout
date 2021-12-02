@@ -1,58 +1,70 @@
 <template>
-<div>
-  <form class="cta-form" name="sign-up">
-    <div class="contact-container">
-      <div>
-         <label for="full-name">Full Name</label>
-         <input
-          id="full-name"
-          type="text"
-          placeholder="John Smith"
-          name="full-name" 
-          required/>
-          
-      </div>       
-      <div>
-        <label for="email">Email address</label>
-        <input
-         id="email"
-         type="email"
-         placeholder="me@example.com"
-         name="email" 
-         required/>
+  <div>
+    <form class="cta-form" name="sign-up">
+      <div class="contact-container">
+        <div>
+          <label for="full-name">Full Name</label>
+          <input
+            id="full-name"
+            type="text"
+            placeholder="John Smith"
+            name="full-name"
+            required
+          />
+        </div>
+        <div>
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="me@example.com"
+            name="email"
+            required
+          />
+        </div>
+        <div>
+          <h3>Message</h3>
+          <textarea
+            class="cta-message"
+            name="Message"
+            id=""
+            cols="30"
+            rows="4"
+            placeholder="Type your message here"
+          />
+          <input
+            type="submit"
+            @click="sendEmail"
+            class="btn--form"
+            placeholder="Send"
+          />
+        </div>
       </div>
-       <div>
-        <h3>Message</h3>
-        <textarea class="cta-message" name="Message" id="" cols="30" rows="4" placeholder="Type your message here"/>
-      <input type="submit" @click="sendEmail" class="btn--form" placeholder="Send">
-     </div>
-    </div>
-   </form>
-    <Popupcontact v-if="contactVisible" @close-mail="contactVisible = false"/>
-</div>
+    </form>
+    <Popupcontact v-if="contactVisible" @close-mail="contactVisible = false" />
+  </div>
 </template>
 
 <script>
-
-  import Popupcontact from './Popupcontact.vue'
+import Popupcontact from "./Popupcontact.vue";
 
 export default {
-    name: 'Contactus',
-    data(){
-      return{
-        contactVisible: false
-      }
+  name: "Contactus",
+  data() {
+    return {
+      contactVisible: false,
+    };
+  },
+  components: {
+    Popupcontact,
+  },
+  methods: {
+    sendEmail(Event) {
+      this.contactVisible = true;
+      Event.preventDefault();
     },
-    components:{
-      Popupcontact
-    },
-    methods:{
-      sendEmail(Event){
-        this.contactVisible = true;
-        Event.preventDefault();
-      }
-    }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -60,15 +72,15 @@ export default {
 /* Contact SECTION*/
 /***************************/
 .cta-form {
-    display: flex;
-    font-size: 1.6rem;
-    font-weight: 500;
-    margin-bottom: 1.2rem;
-    height: 40rem;
-    align-content: center;
-    margin-top: 2rem;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  height: 40rem;
+  align-content: center;
+  margin-top: 2rem;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn--form {
@@ -118,5 +130,4 @@ export default {
   font-weight: 500;
   margin-bottom: 1.2rem;
 }
-
 </style>

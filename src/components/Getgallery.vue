@@ -1,71 +1,62 @@
 <template>
   <div class="galleryContainer">
-
-      
-
     <div class="products">
-
-      
       <ul class="main-ul-products">
-    
         <li
           class="product-li-class"
           v-for="product in cartGallery"
           :key="product.test"
         >
-          <img @click="getPopupDetails(product)" :src="product.image" :id="product.id" class="imgMain-products" />
+          <img
+            @click="getPopupDetails(product)"
+            :src="product.image"
+            :id="product.id"
+            class="imgMain-products"
+          />
           <h1 class="product-name">{{ product.title }}</h1>
-          <p class="price-item">{{ product.price }} $</p>          
-          <button @click="sendToCartFromGallery(product)" class="btn-product">Add item</button>
-         
-          
+          <p class="price-item">{{ product.price }} $</p>
+          <button @click="sendToCartFromGallery(product)" class="btn-product">
+            Add item
+          </button>
         </li>
-
       </ul>
-      </div>
-    
-      <Popupitem :product="clickedProduct" @send-Product="$emit('send-Product')" @close-Popup="showPopup= false" v-if="showPopup" />
     </div>
-      
 
+    <Popupitem
+      :product="clickedProduct"
+      @send-Product="$emit('send-Product')"
+      @close-Popup="showPopup = false"
+      v-if="showPopup"
+    />
+  </div>
 </template>
 
 <script>
-
-
 export default {
   name: "Getgallery",
   components: {
-      Popupitem: () => import('./Popupitem.vue'),
-     
+    Popupitem: () => import("./Popupitem.vue"),
   },
   data() {
     return {
       showPopup: false,
-      searchedTitle: '',
-     
+      searchedTitle: "",
     };
   },
-  props:{
+  props: {
     cartGallery: Array,
-    clickedProduct: Object
+    clickedProduct: Object,
   },
   methods: {
-    getPopupDetails(product){
-        this.showPopup = true;
-       this.$emit('get-Popupdetails', product);
-        
+    getPopupDetails(product) {
+      this.showPopup = true;
+      this.$emit("get-Popupdetails", product);
     },
-       
 
-  sendToCartFromGallery(product){
-    this.$emit('sendToCartFromGallery', product);
-    
-  },  
-
-  }
- 
-
+    sendToCartFromGallery(product) {
+      this.$emit("sendToCartFromGallery", product);
+    },
+  },
 };
 </script>
 
@@ -119,7 +110,7 @@ export default {
 .main-ul-products {
   display: grid;
   grid-template-columns: 20rem 20rem 20rem;
-  
+
   column-gap: 1rem;
   row-gap: 1rem;
   justify-content: center;
@@ -151,21 +142,19 @@ export default {
 }
 
 .btn-product {
-background-color: antiquewhite; 
-color: black;
-height: 35px;
-width: 110px;
-border: 1px solid black;
+  background-color: antiquewhite;
+  color: black;
+  height: 35px;
+  width: 110px;
+  border: 1px solid black;
 }
 
-.main-ul { 
+.main-ul {
   display: flex;
   text-decoration: none;
   list-style: none;
   gap: 0.2rem;
 }
-
-
 
 /*********************************/
 /* KORT */

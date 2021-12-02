@@ -6,9 +6,8 @@
         class="cashout-container"
         v-for="cartitem in filter"
         :key="cartitem.id"
-      
       >
-        <div class="basket-labels"  >
+        <div class="basket-labels">
           <ul>
             <li class="item item-heading storlek">Item</li>
             <li class="price storlek">Price</li>
@@ -19,10 +18,8 @@
 
         <!--Produkt start-->
 
-        <div class="basket-product"  >
-            
-          <div class="item" >
-
+        <div class="basket-product">
+          <div class="item">
             <div class="product-image">
               <img :src="cartitem.image" alt="" class="product-frame" />
             </div>
@@ -35,95 +32,104 @@
           </div>
           <div class="price">{{ cartitem.price }} $</div>
           <div class="quantity">
-            <p class="price">{{cartitem.quantity}} </p>
+            <p class="price">{{ cartitem.quantity }}</p>
           </div>
-          <div class="subtotal">{{Math.round(cartitem.price * cartitem.quantity)}}  $</div>
+          <div class="subtotal">
+            {{ Math.round(cartitem.price * cartitem.quantity) }} $
+          </div>
           <div class="remove">
-            <button class="padd" @click="deleteWholeProduct(cartitem.id)">Delete whole product</button>
-              <button class="padd" @click="increaseQuantity(cartitem)" >Increase    </button>
-            <button class="padd" @click="decreaseQuantity(cartitem.id)">Decrease </button>
+            <button class="padd" @click="deleteWholeProduct(cartitem.id)">
+              Delete whole product
+            </button>
+            <button class="padd" @click="increaseQuantity(cartitem)">
+              Increase
+            </button>
+            <button class="padd" @click="decreaseQuantity(cartitem.id)">
+              Decrease
+            </button>
           </div>
         </div>
 
         <!--Produkt slut-->
-         
-
+      </div>
+      <div class="summary-subtotal">
+        <div v-if="cart.length === 0">
+          <h3>Your cart is empty</h3>
         </div>
-            <div class="summary-subtotal">
-              <div v-if="cart.length === 0">
-            <h3>Your cart is empty</h3>
-        </div >
-              <div v-if="cart.length > 0" class="subtotal-title">Total</div>
-              <div v-if="cart.length > 0" class="subtotal-value"><h3> {{ Math.round(sumTotal) }} $</h3></div>
-            </div>
-        <div class="summary-checkout">
-          <button v-if="cart.length > 0" @click="confirmOrder" class="checkout-cta">Go to Checkout</button>
+        <div v-if="cart.length > 0" class="subtotal-title">Total</div>
+        <div v-if="cart.length > 0" class="subtotal-value">
+          <h3>{{ Math.round(sumTotal) }} $</h3>
         </div>
-        <Popuporder v-if="orderVisible" @close-order="orderVisible = false"/>
+      </div>
+      <div class="summary-checkout">
+        <button
+          v-if="cart.length > 0"
+          @click="confirmOrder"
+          class="checkout-cta"
+        >
+          Go to Checkout
+        </button>
+      </div>
+      <Popuporder v-if="orderVisible" @close-order="orderVisible = false" />
     </div>
   </main>
   <!--CHECKOUT SLUT-->
 </template>
 
 <script>
-
-import Popuporder from './Popuporder.vue'
+import Popuporder from "./Popuporder.vue";
 
 export default {
   name: "Getcartpage",
-  components:{
-    Popuporder
+  components: {
+    Popuporder,
   },
-  data(){
-    return{
+  data() {
+    return {
       orderVisible: false,
-      
-    }
+    };
   },
   props: {
     cart: Array,
   },
-  methods:{
-    confirmOrder(){
-     
-        this.orderVisible = true;
+  methods: {
+    confirmOrder() {
+      this.orderVisible = true;
     },
-    deleteWholeProduct(id){
+    deleteWholeProduct(id) {
       this.$emit("deleteProduct", id);
     },
-        increaseQuantity(cartitem){
+    increaseQuantity(cartitem) {
       this.$emit("increase", cartitem);
     },
-    decreaseQuantity(id){
+    decreaseQuantity(id) {
       this.$emit("decrease", id);
     },
-
-
   },
 
-   computed:{
-        filter() {    
-      const sortedCart = [...new Map(this.cart.map(cartitem => [cartitem.id, cartitem])).values()];
-     for(let product of sortedCart){
-      let count = this.cart.filter(cartitem=>cartitem.id === product.id);
-      product.quantity = count.length;
-      
-    }
-    
-    return sortedCart;
-    }, 
-      sumTotal(){
-        let total = 0 ;
-        for(let i=0; i<this.cart.length; i++){
+  computed: {
+    filter() {
+      const sortedCart = [
+        ...new Map(
+          this.cart.map((cartitem) => [cartitem.id, cartitem])
+        ).values(),
+      ];
+      for (let product of sortedCart) {
+        let count = this.cart.filter((cartitem) => cartitem.id === product.id);
+        product.quantity = count.length;
+      }
+
+      return sortedCart;
+    },
+    sumTotal() {
+      let total = 0;
+      for (let i = 0; i < this.cart.length; i++) {
         total += this.cart[i].price;
-         
-        }
-       
-       return total; 
-       
-      } 
-    
-   }
+      }
+
+      return total;
+    },
+  },
 };
 </script>
 
@@ -132,7 +138,6 @@ export default {
   display: flex;
   justify-content: center;
 }
-
 
 a {
   border: 0 none;
@@ -144,27 +149,23 @@ strong {
   font-weight: bold;
 }
 
-.padd  {
- color: black;
- padding: 0px 10px;
+.padd {
+  color: black;
+  padding: 0px 10px;
   text-decoration: none;
-
 }
 
 main {
   display: flex;
   align-items: center;
   flex-direction: column;
-  
 }
 
 button {
- color: black;
- padding: 0px 10px;
+  color: black;
+  padding: 0px 10px;
   text-decoration: none;
-
 }
-
 
 h1 {
   font-size: 0.75rem;
@@ -231,7 +232,6 @@ button,
 .basket {
   width: 960px;
   padding: 100px 0px;
-  
 }
 
 .basket-labels {

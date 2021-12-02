@@ -1,232 +1,236 @@
 <template>
-    <div id="app">
-      <div class="header-image">
-        <a @click="goToGallery" href="#"
-          ><img
-            src="https://i.ibb.co/jrpR7f0/logo.png"
-            class="loga"
-            alt="logo"
-            border="0"
-        /></a>
+  <div id="app">
+    <div class="header-image">
+      <a @click="goToGallery" href="#"
+        ><img
+          src="https://i.ibb.co/jrpR7f0/logo.png"
+          class="loga"
+          alt="logo"
+          border="0"
+      /></a>
 
-          <div class="searchbar"  > 
-            <input
-              class="main-search"
-              type="text"
-              name="search"
-              placeholder="Search item..."
-              v-model= "textSearch"
-              @keyup.enter="searchProduct(textSearch)"
-              v-if="galleryVisible"
-  
-            />
+      <div class="searchbar">
+        <input
+          class="main-search"
+          type="text"
+          name="search"
+          placeholder="Search item..."
+          v-model="textSearch"
+          @keyup.enter="searchProduct(textSearch)"
+          v-if="galleryVisible"
+        />
+      </div>
+
+      <div>
+        <button class="button-sort" @click="goToCart">
+          Cart ({{ cart.length }})
+        </button>
+        <button class="button-sort" @click="emptyCart">Empty cart</button>
+        <button class="button-sort" @click="goToContact">Contact us</button>
+      </div>
+    </div>
+
+    <div class="navbar-div" v-if="galleryVisible">
+      <ul class="main-ul">
+        <li class="main-li-categories">
+          <button class="button-sort" @click="filterByCategory('showAll')">
+            Show all
+          </button>
+        </li>
+        <li class="main-li-categories">
+          <button class="button-sort" @click="filterByCategory('electronics')">
+            Electronics
+          </button>
+        </li>
+        <li class="main-li-categories">
+          <button class="button-sort" @click="filterByCategory('jewelery')">
+            Jewelery
+          </button>
+        </li>
+        <li class="main-li-categories">
+          <button
+            class="button-sort"
+            @click="filterByCategory('men\'s clothing')"
+          >
+            Men's clothing
+          </button>
+        </li>
+        <li class="main-li-categories">
+          <button
+            class="button-sort"
+            @click="filterByCategory('women\'s clothing')"
+          >
+            Women's clothing
+          </button>
+        </li>
+      </ul>
+
+      <div class="sortBtn" v-if="galleryVisible">
+        <button class="sort-Btn" @click="lowToHigh">Price: Low to High</button>
+        <button class="sort-Btn" @click="highToLow">Price: High to Low</button>
+      </div>
+    </div>
+
+    <Getcartpage
+      :cart="cart"
+      v-if="cartVisible"
+      @decrease="deleteFromCart"
+      @increase="increaseToCart"
+      @deleteProduct="removeItemsFromCart"
+    />
+    <Getgallery
+      :clickedProduct="clickedProduct"
+      :cartGallery="cartGallery"
+      v-if="galleryVisible"
+      @send-Product="pushProductFromPopup"
+      @sendToCartFromGallery="pushProductToCart"
+      @get-Popupdetails="setClickedProduct"
+    />
+    <Contactus v-if="contactVisible" />
+
+    <section>
+      <footer class="footer">
+        <div class="fot-container">
+          <div class="row">
+            <div class="footer-col">
+              <h4>What we do</h4>
+              <ul>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">privacy policy</a></li>
+              </ul>
             </div>
-
-        <div>
-            <button class="button-sort"  @click=goToCart >Cart ({{cart.length}})</button>
-            <button class="button-sort"  @click=emptyCart>Empty cart</button>
-            <button class="button-sort"  @click=goToContact>Contact us</button>
+            <div class="footer-col">
+              <h4>Get help</h4>
+              <ul>
+                <li><a href="contact.html">Contact us</a></li>
+                <li><a href="#">Shipping</a></li>
+                <li><a href="#">Return</a></li>
+                <li><a href="#">Order status</a></li>
+                <li><a href="#">Payments</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>online shop</h4>
+              <ul>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Jewelery</a></li>
+                <li><a href="#">Men's clothing</a></li>
+                <li><a href="#">Women's clothing</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-
-
-
-            <div class="navbar-div" v-if="galleryVisible">
-    <ul class="main-ul">
-    <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('showAll')">Show all</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('electronics')">Electronics</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('jewelery')">Jewelery</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('men\'s clothing')">Men's clothing</button>
-      </li>
-      <li class="main-li-categories">
-        <button class="button-sort" @click="filterByCategory('women\'s clothing')">Women's clothing</button>
-      </li>
-    </ul>
-
-    <div class="sortBtn" v-if="galleryVisible">
-       <button class="sort-Btn" @click="lowToHigh">Price: Low to High</button>
-       <button class="sort-Btn" @click="highToLow">Price: High to Low</button>
-    </div>
+      </footer>
+    </section>
   </div>
-      
- 
-  <Getcartpage :cart="cart" v-if="cartVisible" @decrease="deleteFromCart" @increase="increaseToCart" @deleteProduct="removeItemsFromCart"/>
-  <Getgallery  :clickedProduct="clickedProduct" :cartGallery="cartGallery" v-if="galleryVisible" @send-Product="pushProductFromPopup" @sendToCartFromGallery="pushProductToCart" @get-Popupdetails="setClickedProduct"/>
-  <Contactus v-if="contactVisible" />
-
-  
-  <section>
-    <footer class="footer">
-      <div class="fot-container">
-        <div class="row">
-          <div class="footer-col">
-            <h4>What we do</h4>
-            <ul>
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">privacy policy</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Get help</h4>
-            <ul>
-              <li><a href="contact.html">Contact us</a></li>
-              <li><a href="#">Shipping</a></li>
-              <li><a href="#">Return</a></li>
-              <li><a href="#">Order status</a></li>
-              <li><a href="#">Payments</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>online shop</h4>
-            <ul>
-              <li><a href="#">Electronics</a></li>
-              <li><a href="#">Jewelery</a></li>
-              <li><a href="#">Men's clothing</a></li>
-              <li><a href="#">Women's clothing</a></li>
-            </ul>
-          </div>
-          
-        </div>
-      </div>
-    </footer>
-  </section>
-  
-    
-    </div>
 </template>
 
 <script>
-import Getgallery from './Getgallery.vue'
-import Getcartpage from './Getcartpage.vue'
-import Contactus from './Contactus.vue'
+import Getgallery from "./Getgallery.vue";
+import Getcartpage from "./Getcartpage.vue";
+import Contactus from "./Contactus.vue";
 
 export default {
-    name: 'Body',
-    components:{
-      Getgallery,
-      Getcartpage,
-      Contactus
+  name: "Body",
+  components: {
+    Getgallery,
+    Getcartpage,
+    Contactus,
+  },
+  data() {
+    return {
+      cart: [],
+      cartGallery: [],
+      Showallcart: [],
+      clickedProduct: null,
+      galleryVisible: true,
+      cartVisible: false,
+      contactVisible: false,
+      textSearch: "",
+      indexToDelete: null,
+    };
+  },
+  methods: {
+    goToCart() {
+      this.cartVisible = true;
+      this.galleryVisible = false;
+      this.contactVisible = false;
     },
-    data(){
-      return{
-        cart: [],
-        cartGallery: [],
-        Showallcart: [],
-        clickedProduct: null,
-        galleryVisible: true,
-        cartVisible: false,
-        contactVisible: false,
-        textSearch: '',
-        indexToDelete: null,
-        
-        
-      };
+    goToContact() {
+      this.contactVisible = true;
+      this.cartVisible = false;
+      this.galleryVisible = false;
     },
-    methods:{
-      goToCart(){
-        this.cartVisible = true;
-        this.galleryVisible = false;
-        this.contactVisible = false;
-      
-      },
-      goToContact(){
-        this.contactVisible = true;
-        this.cartVisible = false;
-        this.galleryVisible = false;
-      },
-      goToGallery(){
-        this.contactVisible =false;
-        this.cartVisible = false;
-        this.galleryVisible = true;
-      },
+    goToGallery() {
+      this.contactVisible = false;
+      this.cartVisible = false;
+      this.galleryVisible = true;
+    },
 
-    pushProductFromPopup(){
+    pushProductFromPopup() {
       this.cart.push(this.clickedProduct);
- 
     },
-    pushProductToCart(product){
-        
-        this.cart.push(product)
-        
-    
-    
+    pushProductToCart(product) {
+      this.cart.push(product);
     },
-    setClickedProduct(product){
+    setClickedProduct(product) {
       this.clickedProduct = product;
-      
     },
-     filterByCategory(category){
-        if(category === 'showAll'){
-            this.cartGallery = this.Showallcart;
-            return;
-        }
+    filterByCategory(category) {
+      if (category === "showAll") {
+        this.cartGallery = this.Showallcart;
+        return;
+      }
 
-        this.cartGallery = this.Showallcart.filter(product => {
-            return product.category === category;
-            
-        })
+      this.cartGallery = this.Showallcart.filter((product) => {
+        return product.category === category;
+      });
     },
-  lowToHigh(){
-    this.cartGallery.sort(function(lowest, highest){
+    lowToHigh() {
+      this.cartGallery.sort(function (lowest, highest) {
         return lowest.price - highest.price;
-    }); 
-    
-  },
-    highToLow(){
-    this.cartGallery.sort(function(lowest, highest){
+      });
+    },
+    highToLow() {
+      this.cartGallery.sort(function (lowest, highest) {
         return highest.price - lowest.price;
-    }); 
-    
-  },
-
-    searchProduct(textSearch){
-      this.cartGallery = this.Showallcart.filter(product=>{
-        return product.title.includes(textSearch);
-        
-      })
+      });
     },
 
-    emptyCart(){
+    searchProduct(textSearch) {
+      this.cartGallery = this.Showallcart.filter((product) => {
+        return product.title.includes(textSearch);
+      });
+    },
+
+    emptyCart() {
       this.cart = [];
     },
 
-
     deleteFromCart(id) {
-       this.indexToDelete = this.cart.findIndex((c) => c.id == id);
-     if (this.indexToDelete != -1) {
+      this.indexToDelete = this.cart.findIndex((c) => c.id == id);
+      if (this.indexToDelete != -1) {
         this.cart.splice(this.indexToDelete, 1);
-
-     }
+      }
     },
 
-    removeItemsFromCart(id){
-     this.cart = this.cart.filter((c) => c.id !== id);
-        
+    removeItemsFromCart(id) {
+      this.cart = this.cart.filter((c) => c.id !== id);
     },
-    increaseToCart(cartitem){
+    increaseToCart(cartitem) {
       this.cart.push(cartitem);
-    }
     },
-      created() {
+  },
+  created() {
     fetch("https://fakestoreapi.com/products/")
       .then((res) => res.json())
-      .then((json) => (this.Showallcart = this.cartGallery = json))
-      
+      .then((json) => (this.Showallcart = this.cartGallery = json));
   },
-
-}
+};
 </script>
 
 <style scoped>
-
 /**********************************/
 /* HEADER */
 /*********************************/
@@ -242,7 +246,6 @@ export default {
   justify-content: space-around;
   background-color: lightgray;
   width: 100%;
-
 }
 
 .main-ul {
@@ -278,17 +281,16 @@ a:hover {
 }
 
 .main-search {
-    height: 3.4rem;
-    width: 30rem;
+  height: 3.4rem;
+  width: 30rem;
 }
 
-.button-sort{
-    background-color: #0096db;
-    color: white;
-    height: 35px;
-    width: 110px;
-    border: 1px solid black;
-
+.button-sort {
+  background-color: #0096db;
+  color: white;
+  height: 35px;
+  width: 110px;
+  border: 1px solid black;
 }
 
 .select {
@@ -309,7 +311,6 @@ a:hover {
   width: 100%;
   gap: 10rem;
   margin-top: 1rem;
-
 }
 
 .button-sort {
@@ -331,9 +332,9 @@ a:hover {
 }
 
 .sortBtn {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.2rem;
 }
 
 .sort-Btn {
@@ -343,7 +344,6 @@ a:hover {
   width: 130px;
   border: 1px solid black;
 }
-
 
 .product-name {
   font-size: 22px;
@@ -360,13 +360,12 @@ a:hover {
 .main-ul-products {
   display: grid;
   grid-template-columns: 20rem 20rem 20rem;
-  
+
   column-gap: 1rem;
   row-gap: 1rem;
   justify-content: center;
   margin-top: 2rem;
 }
-
 
 .product-name {
   font-size: 1.2rem;
@@ -388,20 +387,19 @@ a:hover {
 }
 
 .btn-product {
- background-color: #0096db;
- color: white;
- height: 35px;
- width: 110px;
-border: 1px solid black;
+  background-color: #0096db;
+  color: white;
+  height: 35px;
+  width: 110px;
+  border: 1px solid black;
 }
 
-.main-ul { 
+.main-ul {
   display: flex;
   text-decoration: none;
   list-style: none;
   gap: 0.2rem;
 }
-
 
 /*********************************/
 /* FOT */
@@ -477,7 +475,6 @@ ul {
   background-color: #ffffff;
 }
 
-
 /*responsive*/
 @media (max-width: 1200px) {
   .main-ul-products {
@@ -496,6 +493,4 @@ ul {
     width: 100%;
   }
 }
-
-
 </style>

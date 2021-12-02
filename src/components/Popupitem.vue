@@ -3,7 +3,8 @@
     <div id="popup-content">
       <button class="close" @click="onClose()">X</button>
       <h1>{{ product.title }}</h1>
-      <img class="bildpopup"
+      <img
+        class="bildpopup"
         :src="product.image"
         width="250px"
         height="300px"
@@ -11,8 +12,7 @@
         :key="product.id"
       />
       <div>
-        
-        <h4 class="beskriv" >Description</h4>
+        <h4 class="beskriv">Description</h4>
         <p id="popup-desc">
           {{ product.description }}
         </p>
@@ -32,11 +32,9 @@ export default {
   methods: {
     onClose() {
       this.$emit("close-Popup");
-      
     },
     sendProductToCart() {
-     this.$emit("send-Product");
-  
+      this.$emit("send-Product");
     },
   },
 };
@@ -81,7 +79,7 @@ export default {
 }
 
 .close {
-   padding: 10px 15px;
+  padding: 10px 15px;
   background-color: antiquewhite;
   color: black;
   margin: 20px 0px;

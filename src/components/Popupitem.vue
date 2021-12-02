@@ -16,7 +16,7 @@
         <p id="popup-desc">
           {{ product.description }}
         </p>
-        <button class="knappen" @click="sendProductToCart()">Lägg till</button>
+        <button class="knappen" @click="sendProductToCart()">Add item</button>
       </div>
     </div>
   </div>
